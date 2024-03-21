@@ -1,0 +1,17 @@
+html, body, #root, #root>div {
+    height: 100%
+}
+
+body {
+    margin: 0;
+}
+
+.main {
+    background-color: #cccccc;
+}
+.main__body {
+    background-color: #ffffff;
+    border-radius: 20px;
+    margin: 2rem;
+    padding: 1rem;
+}
