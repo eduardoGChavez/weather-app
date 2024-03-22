@@ -36,3 +36,7 @@ export const size = (toValidate: any) => {
 
   return !isEmpty(toValidate) ? toValidate?.length : 0;
 };
+
+export const icon = (icon: string) => {
+  return `https://openweathermap.org/img/wn/${icon}.png`;
+};

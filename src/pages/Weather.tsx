@@ -2,11 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-
-import Modal from '@mui/material/Modal';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
+import Modal from "@mui/material/Modal";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
 
 import ButttonCustom from "../components/GeneralComponents/ButttonCustom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -23,10 +22,10 @@ interface user {
   name: string;
   longitude: string;
   latitude: string;
-};
+}
 
 interface dataStore {
-  userSelected: user
+  userSelected: user;
 }
 
 const Weather = () => {
@@ -34,7 +33,8 @@ const Weather = () => {
   const navigate = useNavigate();
   const userSelected = useSelector((state: dataStore) => state.userSelected);
   const dispatch = useDispatch();
-  const redux_setUserSelected = (data: user | null) => dispatch(r_setUserSelected(data));
+  const redux_setUserSelected = (data: user | null) =>
+    dispatch(r_setUserSelected(data));
 
   const handleClickBackToHome = () => {
     redux_setUserSelected(null);
@@ -53,7 +53,7 @@ const Weather = () => {
   };
 
   return (
-    <div>
+    <div className="main_body__content">
       <Modal
         open={!!openModal}
         onClose={handleRedirectToHome}
@@ -61,10 +61,15 @@ const Weather = () => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2" align="center">
-            No hay usuario seleccionado
+          <Typography
+            id="modal-modal-title"
+            variant="h6"
+            component="h2"
+            align="center"
+          >
+            Aún no seleccionas un usuario
           </Typography>
-          
+
           <div className="flex justify-content-center mt-1">
             <ButttonCustom
               typeButton={"accept"}
@@ -75,23 +80,26 @@ const Weather = () => {
         </Box>
       </Modal>
 
+      {/* TODO: Soporte para icónos con posición left o right */}
       <Button
         onClick={handleClickBackToHome}
         variant="outlined"
-        style={{
-          paddingTop: 0,
-          paddingBottom: 0,
-        }}
       >
         <ArrowBackIcon />
         Regresar al Inicio
       </Button>
 
-      <UserInfo user={userSelected} />
-      <Forcast
-        latitude={userSelected.latitude}
-        longitude={userSelected.longitude}
-      />
+      {isEmpty(userSelected) ? (
+        <Typography id="no-user-selected" variant="h6" component="h2" align="center">
+          No se ha seleccionado un usuario
+        </Typography>
+      ) : (<>
+        <UserInfo user={userSelected} />
+        <Forcast
+          latitude={userSelected.latitude}
+          longitude={userSelected.longitude}
+        />
+      </>)}
     </div>
   );
 };

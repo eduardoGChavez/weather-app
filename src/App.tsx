@@ -10,6 +10,7 @@ import Weather from "./pages/Weather";
 import Layout from "./components/Layout";
 import "./styles/index.sass";
 import "./styles/index.css";
+import NotFound from "./pages/NotFound";
 
 const App = () => {
   return (
@@ -18,7 +19,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/weather" element={<Weather />} />
-          <Route path="*" element={<p> No existe página </p>} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Layout>
     </BrowserRouter>

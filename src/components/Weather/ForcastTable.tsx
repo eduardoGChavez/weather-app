@@ -1,39 +1,38 @@
 import React, { FC, useState } from "react";
 
-import Grid from '@mui/material/Grid';
-import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import Avatar from '@mui/material/Avatar';
-import Typography from '@mui/material/Typography';
+import Grid from "@mui/material/Grid";
+import Button from "@mui/material/Button";
+import Tooltip from "@mui/material/Tooltip";
+import Avatar from "@mui/material/Avatar";
+import Typography from "@mui/material/Typography";
 
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-
-
+import { icon } from "../../utils/validations";
 
 interface data {
-  icon: string,
-  description: string,
-  hour: string,
-  temp: number,
-  temp_min: number,
-  temp_max: number,
-  humidity: number,
-  wind_speed: number
-};
-
+  icon: string;
+  description: string;
+  hour: string;
+  temp: number;
+  temp_min: number;
+  temp_max: number;
+  humidity: number;
+  wind_speed: number;
+}
 
 interface forcastTableProps {
-  title: string,
-  dataTable: data[]
-};
-
+  title: string;
+  dataTable: data[];
+}
 
 const ForcastTable: FC<forcastTableProps> = ({ title, dataTable }) => {
   const [showTable, setShowTable] = useState(false);
@@ -44,31 +43,26 @@ const ForcastTable: FC<forcastTableProps> = ({ title, dataTable }) => {
 
   return (
     <Grid container>
-
-
-
-
-      <Grid container minHeight={50}>
-        <Grid xs display="flex" justifyContent="center" alignItems="center">
-          <Typography>Ver detalles de {title}</Typography>
+      <Grid
+        container
+        minHeight={50}
+        className="cursor-pointer"
+        onClick={handleClickMoreDetails}
+      >
+        <Grid className="pl-1" xs display="flex" justifyContent="left  " alignItems="center">
+          <Typography>{title}</Typography>
         </Grid>
-        <Grid xs display="flex" justifyContent="center" alignItems="center">
-          <Button
-            onClick={handleClickMoreDetails}
-            variant="outlined"
-            style={{
-              paddingTop: 0,
-              paddingBottom: 0,
-            }}
-          >
-            Ver más
-          </Button>
+        <Grid className="pr-1" xs display="flex" justifyContent="right" alignItems="center">
+          {!showTable ? (
+            <KeyboardArrowDownIcon />
+          ) : (
+            <KeyboardArrowUpIcon />
+          )}
         </Grid>
       </Grid>
 
-      {/* TODO: Loader y mensaje cuando no se encuentran coincidencias. */}
       {showTable && (
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} sx={{ borderRadius: '15px' }}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
               <TableRow>
@@ -85,11 +79,14 @@ const ForcastTable: FC<forcastTableProps> = ({ title, dataTable }) => {
               {dataTable.map((row, index) => (
                 <TableRow
                   key={`row-${index}-table-${title}`}
-                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
                   <TableCell align="center">
                     <Tooltip title={row.description} placement="top">
-                      <Avatar src={`https://openweathermap.org/img/wn/${row.icon}.png`} style={{ backgroundColor: "#3f7bf7" }} />
+                      <Avatar
+                        src={icon(row.icon)}
+                        style={{ backgroundColor: "#3f7bf7" }}
+                      />
                     </Tooltip>
                   </TableCell>
                   <TableCell align="center">{row.hour}</TableCell>
@@ -105,7 +102,7 @@ const ForcastTable: FC<forcastTableProps> = ({ title, dataTable }) => {
         </TableContainer>
       )}
     </Grid>
-	);
+  );
 };
 
 export default ForcastTable;

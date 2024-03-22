@@ -10,8 +10,18 @@ body {
     background-color: #cccccc;
 }
 .main__body {
+    background-color: #cccccc;
+    /* border-radius: 20px; */
+    padding: 2rem;
+    /* padding: 1rem; */
+}
+.main_body__content {
     background-color: #ffffff;
     border-radius: 20px;
-    margin: 2rem;
     padding: 1rem;
+    /* padding: 1rem; */
+}
+
+.table__blue tr:nth-child(odd) {
+    background-color: #e7f1f1;
 }
