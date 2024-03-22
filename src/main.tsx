@@ -12,12 +12,11 @@ ReactDOM.createRoot(root).render(
   <React.StrictMode>
     <Provider store={store}>
       <PersistGate
-        
         loading={<div>loading</div>}
         // onBeforeLift={() => {}}
         persistor={persistor}
       >
-          <App />
+        <App />
       </PersistGate>
     </Provider>
   </React.StrictMode>

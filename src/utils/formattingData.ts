@@ -3,7 +3,7 @@
 
 export const getForcastData = (forcasts: any) => {
   try {
-const subArreglos: any = {};
+    const subArreglos: any = {};
     forcasts.forEach((elemento: any) => {
       const stringSplit = elemento.dt_txt.split(" ");
       const key = stringSplit[0];

@@ -3,10 +3,17 @@ import React, { FC, useMemo } from "react";
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-
+import Icon from '@mui/material/Icon';
+import Tooltip from '@mui/material/Tooltip';
 import CircularProgress from '@mui/material/CircularProgress';
 
-import { isEmpty } from "../../utils/validations";
+import CellUser from "../Home/CellUser";
+import humidityIcon from "../../assets/humidity.png";
+import windIcon from "../../assets/wind_icon.svg";
+import minTempIcon from "../../assets/min_temp.png";
+import maxTempIcon from "../../assets/max_temp.svg";
+
+import { isEmpty, icon } from "../../utils/validations";
 import { getWeather } from "../../utils/formattingData";
 import { useGetTodayWeatherQuery } from "../../redux_toolkit/weatherSlice";
 
@@ -34,7 +41,7 @@ const UserInfo: FC<userInfoProps> = ({ user }) => {
   const weather = useMemo(() => {
     if (
       (isEmpty(data) || !isEmpty(error)) || (
-        !isEmpty(data?.coord) && (latitude !== data.coord.lat || longitude !== data.coord.lon)
+        !isEmpty(data?.coord) && (isEmpty(latitude) || isEmpty(latitude))
       )
     ) {
       return {};
@@ -44,113 +51,93 @@ const UserInfo: FC<userInfoProps> = ({ user }) => {
 
   return (
     <div>
-      {isLoading && (
-        <div>
-          <CircularProgress />
-          Cargando información del clima de hoy.
-        </div>
-      )}
-
-      
-      {!isLoading && !isEmpty(error) && (
-        <p>No fue posible encontrar información del clima de hoy.</p>
-      )}
-
-
-
-      <>
-        <Grid container>
-          <Typography className="flex" component="div">
-            <Box sx={{ fontWeight: 'bold', marginRight: 1 }}>Nombre:{" "}</Box>
-            <Box sx={{ fontWeight: 'regular' }}>{` ${user.name}`}</Box>
-          </Typography>
-        </Grid>
-
-        <Grid container>
-          <Typography className="flex" component="div">
-            <Box sx={{ fontWeight: 'bold', marginRight: 1 }}>Latitud:{" "}</Box>
-            <Box sx={{ fontWeight: 'regular' }}>{` ${user.latitude}`}</Box>
-          </Typography>
-        </Grid>
-
-        <Grid container>
-          <Typography className="flex" component="div">
-            <Box sx={{ fontWeight: 'bold', marginRight: 1 }}>Longitud:{" "}</Box>
-            <Box sx={{ fontWeight: 'regular' }}>{` ${user.longitude}`}</Box>
-          </Typography>
-        </Grid>
-      </>
-      
-
-      
-      <Typography id="modal-modal-title" variant="h6" component="h2" align="center">
+      <Typography id="modal-modal-title-weather" variant="h6" component="h2" align="center">
         Clima de hoy
       </Typography>
 
-      {!isLoading && (!isEmpty(error) || isEmpty(weather)) && (
-        <div>
-          <p>No se encontraron datos</p>
-        </div>
-      )}
+      <Grid container className="justify-content-center mb-2">
+        {isLoading && (
+          <div>
+            <CircularProgress />
+            Cargando predicción de clima.
+          </div>
+        )}
+        {!isLoading && (!isEmpty(error) || isEmpty(weather)) && (
+          <Typography variant="h6" className="bold pl-half">
+            No se pudo encontrar el clima con la latitud y longitud proporcionados
+          </Typography>
+        )}
+        {!isLoading && isEmpty(error) && !isEmpty(weather) && (
+          <div>
+            <Grid container>
+              <div className="flex pr-1">
+                <Tooltip title={weather.description} placement="top">
+                  <Icon>
+                    <img className="mr-1" src={icon(weather.icon)} height={24} width={24} />
+                  </Icon>
+                </Tooltip>
+                <Typography variant="h6" className="bold pl-half">
+                  {weather.temp}°C
+                </Typography>
+              </div>
 
-      {!isLoading && isEmpty(error) && !isEmpty(weather) && (
-        <div>
-          <Grid container>
-            <Typography style={{ fontWeight: "bold" }}>
-              Lugar:{" "}
-            </Typography>
-            <Typography className="bold">
-              {weather.location}
-            </Typography>
-          </Grid>
+              <div>
+                <div className="flex pr-1">
+                  <Icon>
+                    <img className="mr-1" src={minTempIcon} height={24} width={24} />
+                  </Icon>
+                  <div className="flex flex-direction-column">
+                    <Typography variant="caption" className="bold">
+                      Temp. minima
+                    </Typography>
+                    <Typography variant="caption">
+                      {weather.temp_min}°C
+                    </Typography>
+                  </div>
+                </div>
+                <div className="flex">
+                  <Icon>
+                    <img className="mr-1" src={maxTempIcon} height={24} width={24} />
+                  </Icon>
+                  <div className="flex flex-direction-column">
+                    <Typography variant="caption" className="bold">
+                      Temp. máxima
+                    </Typography>
+                    <Typography variant="caption">
+                      {weather.temp_max}°C
+                    </Typography>
+                  </div>
+                </div>
+              </div>
 
-          <Grid container>
-            <Typography style={{ fontWeight: "bold" }}>
-              Temperatura:{" "}
-            </Typography>
-            <Typography className="bold">
-              {weather.temp}
-            </Typography>
-          </Grid>
+              <div>
+                <div className="flex">
+                  <Icon>
+                    <img className="mr-1" src={humidityIcon} height={24} width={24} />
+                  </Icon>
+                  <Typography variant="h6" className="bold pl-half">
+                    {weather.humidity}%
+                  </Typography>
+                </div>
+                <div className="flex">
+                  <Icon>
+                    <img src={windIcon} height={24} width={24} />
+                  </Icon>
+                  <Typography variant="h6" className="bold pl-half">
+                    {weather.wind_speed} m/s
+                  </Typography>
+                </div>
+              </div>
+            </Grid>
+          </div>
+        )}
+        <CellUser
+          name={user.name}
+          latitude={user.latitude}
+          longitude={user.longitude}
+        />
+      </Grid>
 
-          <Grid container>
-            <Typography style={{ fontWeight: "bold" }}>
-              Temperatura mínima:{" "}
-            </Typography>
-            <Typography className="bold">
-              {weather.temp_min}
-            </Typography>
-          </Grid>
-
-          <Grid container>
-            <Typography style={{ fontWeight: "bold" }}>
-              Temperatura máxima:{" "}
-            </Typography>
-            <Typography className="bold">
-              {weather.temp_max}
-            </Typography>
-          </Grid>
-
-          <Grid container>
-            <Typography style={{ fontWeight: "bold" }}>
-              Humedad:{" "}
-            </Typography>
-            <Typography className="bold">
-              {weather.humidity}
-            </Typography>
-          </Grid>
-
-          <Grid container>
-            <Typography style={{ fontWeight: "bold" }}>
-              Velocidad del viento:{" "}
-            </Typography>
-            <Typography className="bold">
-              {weather.wind_speed}
-            </Typography>
-          </Grid>
-
-        </div>
-      )}
     </div>
 	);
 };

@@ -1,6 +1,7 @@
 import React, { FC, useMemo } from "react";
 
 import CircularProgress from '@mui/material/CircularProgress';
+import Typography from '@mui/material/Typography';
 
 import { isEmpty } from "../../utils/validations";
 import { getForcastData } from "../../utils/formattingData";
@@ -34,6 +35,9 @@ const Forcast: FC<forcastProps> = ({ latitude, longitude }) => {
 
   return (
     <div>
+      <Typography id="modal-modal-title-weather" variant="h6" component="h2" align="center">
+        Clima de hoy a 4 días
+      </Typography>
       {isLoading && (
         <div>
           <CircularProgress />
@@ -43,7 +47,9 @@ const Forcast: FC<forcastProps> = ({ latitude, longitude }) => {
 
       
       {!isLoading && !isEmpty(error) && (
-        <p>No fue posible encontrar predicciones </p>
+        <Typography variant="h6" className="bold pl-half text-align-center">
+          No fue posible encontrar predicciones
+        </Typography>
       )}
       
       {!isLoading && isEmpty(error) && (
@@ -53,7 +59,7 @@ const Forcast: FC<forcastProps> = ({ latitude, longitude }) => {
             style={{
               backgroundColor: "#e2e2e2",
               margin: "2rem",
-              borderRadius: "4px",
+              borderRadius: "15px",
             }}
           >
             <ForcastTable

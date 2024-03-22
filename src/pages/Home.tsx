@@ -56,10 +56,12 @@ const Home = () => {
     if (isEmpty(longitude)) {
       messageNameLongitude = "Por favor ingresa una Longitud.";
     }
+
+    setErrorName(messageName);
+    seErrortLatitude(messageLatitude);
+    setErrorLongitude(messageNameLongitude);
+  
     if (!isEmpty(messageName) || !isEmpty(messageLatitude) || !isEmpty(messageNameLongitude)) {
-      setErrorName(messageName);
-      seErrortLatitude(messageLatitude);
-      setErrorLongitude(messageNameLongitude);
       return;
     }
 
@@ -103,6 +105,9 @@ const Home = () => {
     setName("");
     setLongitude("");
     setLatitude("");
+    setErrorName("");
+    seErrortLatitude("");
+    setErrorLongitude("");
     setOpenModal("");
   };
 
@@ -113,7 +118,7 @@ const Home = () => {
   }, []);
 
   return (
-		<div>
+		<div className="main_body__content">
       <Modal
         open={!!openModal}
         onClose={handleCloseModal}
