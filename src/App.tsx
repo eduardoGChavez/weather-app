@@ -19,8 +19,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/weather" element={<Weather />} />
-          {/* <Route path="*" element={<NotFound />} /> */}
-          <Route element={<NotFound />} />
+          <Route path="/*" element={<NotFound />} />
         </Routes>
       </Layout>
     </BrowserRouter>
